@@ -35,11 +35,10 @@ jobs:
     - name: Check for changes
       id: git_diff
       run: |
-        git diff --exit-code || echo "Changes detected"
-      continue-on-error: true
+        git diff --exit-code || echo "changes_detected=true" >> $GITHUB_ENV
 
     - name: Commit and push changes
-      if: ${{ steps.git_diff.outcome == 'failure' }}
+      if: github.env.changes_detected == 'true'
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
