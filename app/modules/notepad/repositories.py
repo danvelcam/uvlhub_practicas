@@ -7,3 +7,6 @@ class NotepadRepository(BaseRepository):
 
     def get_all_by_user(self, user_id):
         return Notepad.query.filter_by(user_id=user_id).all()
+    
+    def get_or_404(self, notepad_id):
+        return Notepad.query.filter_by(id=notepad_id).first_or_404()
