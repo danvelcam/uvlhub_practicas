@@ -10,3 +10,6 @@ class NotepadRepository(BaseRepository):
     
     def get_or_404(self, notepad_id):
         return Notepad.query.filter_by(id=notepad_id).first_or_404()
+    
+    def get_by_id(self, notepad_id):
+        return Notepad.query.filter_by(id=notepad_id).first()
