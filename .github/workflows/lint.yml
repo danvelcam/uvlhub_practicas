@@ -36,9 +36,10 @@ jobs:
       id: git_diff
       run: |
         git diff --exit-code || echo "Changes detected"
+      continue-on-error: true
 
     - name: Commit and push changes
-      if: steps.git_diff.outputs.changes_detected == 'true'
+      if: ${{ steps.git_diff.outcome == 'failure' }}
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
