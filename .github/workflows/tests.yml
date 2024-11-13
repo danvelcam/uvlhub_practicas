@@ -41,9 +41,6 @@ jobs:
       run: |
         pip install -e ./
 
-    - name: Give permmission to chromewebdriver
-      run: |
-        sudo chmod +x /home/runner/.wdm/drivers/chromedriver/linux64/130.0.6723.116/chromedriver-linux64/chromedriver 
 
     - name: Run Tests
       env:
