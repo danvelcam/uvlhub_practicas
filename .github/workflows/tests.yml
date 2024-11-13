@@ -33,6 +33,7 @@ jobs:
       run: |
         sed -i '/rosemary @ file:\/\/\/app/d' requirements.txt
         pip install -e ./
+        sudo chmod +x /home/runner/.wdm/drivers/chromedriver/linux64/130.0.6723.116/chromedriver-linux64/chromedriver
 
     - name: Install dependencies
       run: |
@@ -52,4 +53,5 @@ jobs:
     
     - name: Run GUI tests
       run: |
+        flask run --debug
         rosemary selenium
