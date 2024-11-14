@@ -9,8 +9,7 @@ body:
       label: "Descripción de la incidencia"
       description: "Describir brevemente el problema"
     validations:
-        required: true
-      
+      required: true
 
   - type: textarea
     id: steps-to-reproduce
