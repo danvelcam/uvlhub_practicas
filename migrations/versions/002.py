@@ -84,6 +84,7 @@ def downgrade():
     mysql_default_charset='utf8mb4',
     mysql_engine='InnoDB'
     )
-    op.drop_table('user_community')
     op.drop_table('community')
+    op.drop_table('user_community')
+
 
