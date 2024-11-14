@@ -59,14 +59,14 @@ jobs:
             flask db migrate -m "[bot]migration after merging heads"
             flask db upgrade
             echo "Merged heads and upgraded DB."
+            echo "changes_detected=true" >> $GITHUB_ENV
           else
             echo "DB upgrade successful or another error occurred."
             exit 1
           fi
-        
 
       - name: Commit and push changes
-        if: success() && steps.db-upgrade.outcome == 'success'
+        if: env.changes_detected == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
