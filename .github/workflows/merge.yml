@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - main
 
 jobs:
   migrate-database:
@@ -37,7 +36,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Attempt DB upgrade
-        continue-on-error: true
         id: db-upgrade
         env:
           FLASK_ENV: testing
@@ -55,16 +53,19 @@ jobs:
           if grep -q 'Multiple head revisions are present' db_upgrade_output.txt; then
             echo "Multiple head revisions found. Merging heads..."
             flask db merge heads -m "[bot]merging heads"
+            flask db upgrade
             flask db migrate -m "[bot]migration after merging heads"
+            flask db upgrade
             echo "Merged heads and upgraded DB."
-            echo "changes_detected=true" >> $GITHUB_ENV
           else
             echo "DB upgrade successful or another error occurred."
             exit 1
           fi
+        continue-on-error: true
+        
 
       - name: Commit and push changes
-        if: env.changes_detected == 'true'
+        if: success() && steps.db-upgrade.outcome == 'success'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
