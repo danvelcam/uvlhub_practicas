@@ -16,9 +16,13 @@ def index():
     form = NotepadForm()
     notepads = notepad_service.get_all_by_user(current_user.id)
     return render_template("notepad/index.html", notepads=notepads, form=form)
+
+
 """
 CREATE
 """
+
+
 @notepad_bp.route("/notepad/create", methods=["GET", "POST"])
 @login_required
 def create_notepad():
@@ -41,6 +45,8 @@ def create_notepad():
 """
 READ BY ID
 """
+
+
 @notepad_bp.route("/notepad/<int:notepad_id>", methods=["GET"])
 @login_required
 def get_notepad(notepad_id):
