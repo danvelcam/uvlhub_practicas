@@ -1,16 +1,16 @@
 name: "Informe de Incidencia"
 description: "Crea un informe de una incidencia"
-labels: ["bug"]
+labels: ['bug']
 assignees: []
 
 body:
   - type: textarea
-    id: description
     attributes:
       label: "Descripción de la incidencia"
       description: "Describir brevemente el problema"
     validations:
-      required: true
+        required: true
+      
 
   - type: textarea
     id: steps-to-reproduce
