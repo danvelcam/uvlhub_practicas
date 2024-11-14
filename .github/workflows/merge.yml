@@ -37,6 +37,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Attempt DB upgrade
+        continue-on-error: true
         id: db-upgrade
         env:
           FLASK_ENV: testing
@@ -62,7 +63,6 @@ jobs:
             echo "DB upgrade successful or another error occurred."
             exit 1
           fi
-        continue-on-error: true
         
 
       - name: Commit and push changes
