@@ -26,6 +26,7 @@ jobs:
     - name: Checkout branch
       run: |
         git checkout -B ${GITHUB_HEAD_REF}
+        git pull origin ${GITHUB_HEAD_REF}
 
     - name: Lint with flake8
       continue-on-error: true
