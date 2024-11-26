@@ -8,3 +8,7 @@ class NotepadService(BaseService):
 
     def get_all_by_user(self, user_id):
         return self.repository.get_all_by_user(user_id)
+
+    def get_by_id(self, id):
+        
+        return self.repository.get_by_id(id)
