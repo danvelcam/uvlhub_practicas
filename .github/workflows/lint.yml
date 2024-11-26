@@ -7,7 +7,7 @@ on:
     branches: [main, develop]
 
 permissions:
-  contents: write
+  contents: write  
 
 jobs:
   lint:
@@ -37,24 +37,23 @@ jobs:
       run: |
         black app
 
-    - name: Commit and push changes if detected
+    - name: Check for changes
+      id: git_diff
       run: |
-        # Detect changes
-        changes_detected=false
-        if ! git diff --quiet; then
-          changes_detected=true
-        fi
+        if [[ -n $(git diff --name-only) ]]; then echo "changes_detected=true" >> $GITHUB_ENV; fi
 
-        # Commit and push if changes exist
-        if [ "$changes_detected" = true ]; then
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -B "${GITHUB_HEAD_REF:-$(git rev-parse --abbrev-ref HEAD)}"
-          git add .
-          git commit -m 'chore: format code according to pep8'
-          git push origin HEAD:${GITHUB_HEAD_REF:-$(git rev-parse --abbrev-ref HEAD)}
-        else
-          echo "No changes detected. Skipping commit and push."
-        fi
+    - name: Checkout branch
+      if: env.changes_detected == 'true'
+      run: |
+        git checkout -B ${GITHUB_HEAD_REF}
+
+    - name: Commit and push changes
+      if: env.changes_detected == 'true'
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add .
+        git commit -m 'chore: format code according to pep8'
+        git push origin HEAD:${GITHUB_HEAD_REF}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
