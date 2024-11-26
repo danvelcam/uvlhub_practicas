@@ -46,6 +46,11 @@ jobs:
       run: |
         git checkout -B ${GITHUB_HEAD_REF}
 
+    - name: Pull latest changes
+      if: env.changes_detected == 'true'
+      run: |
+        git pull --rebase origin ${GITHUB_HEAD_REF}
+
     - name: Commit and push changes
       if: env.changes_detected == 'true'
       run: |
