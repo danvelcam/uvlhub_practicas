@@ -26,3 +26,8 @@ def restaValores(a, b):
 
 print(sumarValores(5, 3))
 print(restaValores(10, 2))
+
+def    suma( a , b) :
+  resultado=  a+b
+  return   resultado
+
