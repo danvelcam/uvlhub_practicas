@@ -6,12 +6,17 @@ on:
   pull_request:
     branches: [main, develop]
 
+permissions:
+  contents: write
+
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -32,20 +37,24 @@ jobs:
       run: |
         black app
 
-    - name: Setup Git
+    - name: Commit and push changes if detected
       run: |
-        git config user.name "GitHub Action Bot"
-        git config user.email "action@github.com"
-
-    - name: Detect changes and push
-      run: |
-        if [[ -n $(git diff --name-only) ]]; then
-            echo "Se detectaron cambios:"
-            git diff --name-only
-
-            git add .
-            git commit -m "Auto-commit: Cambios detectados"
-            git push origin main
-        else
-            echo "No se detectaron cambios."
+        # Detect changes
+        changes_detected=false
+        if ! git diff --quiet; then
+          changes_detected=true
         fi
+
+        # Commit and push if changes exist
+        if [ "$changes_detected" = true ]; then
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -B "${GITHUB_HEAD_REF:-$(git rev-parse --abbrev-ref HEAD)}"
+          git add .
+          git commit -m 'chore: format code according to pep8'
+          git push origin HEAD:${GITHUB_HEAD_REF:-$(git rev-parse --abbrev-ref HEAD)}
+        else
+          echo "No changes detected. Skipping commit and push."
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
