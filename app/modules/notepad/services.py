@@ -15,9 +15,14 @@ class NotepadService(BaseService):
 
         return self.repository.get_by_id(id)
 
-    def  sumarValores ( a,b ) : return a+b
+    def sumarValores(a, b):
+        return a + b
+
+
 def restaValores(a, b):
-      resultado= a  -b
-      return   resultado
-print(sumarValores (  5,3  ))
-print(restaValores(10 , 2))
+    resultado = a - b
+    return resultado
+
+
+print(sumarValores(5, 3))
+print(restaValores(10, 2))
