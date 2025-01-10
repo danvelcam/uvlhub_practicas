@@ -11,7 +11,6 @@ class NotepadService(BaseService):
 
     def get_by_id(self, id):
 
-
         patata = "patata"
 
         return self.repository.get_by_id(id)
